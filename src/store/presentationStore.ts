@@ -25,6 +25,9 @@ interface PresentationState {
   deleteSection: (presentationId: string, sectionId: string) => void;
   reorderSections: (presentationId: string, sectionIds: string[]) => void;
 
+  // Import
+  importPresentation: (name: string, sections: { name: string; durationSec: number }[]) => void;
+
   // Selectors
   getActivePresentation: () => Presentation | null;
 }
@@ -160,6 +163,25 @@ export const usePresentationStore = create<PresentationState>()(
               .filter((s): s is Section => s !== undefined);
             return { ...p, sections: reordered, updatedAt: Date.now() };
           }),
+        }));
+      },
+
+      importPresentation: (name, sections) => {
+        const id = crypto.randomUUID();
+        const now = Date.now();
+        const newSections: Section[] = sections.map(s => ({
+          id: crypto.randomUUID(),
+          name: s.name,
+          originalDurationSec: s.durationSec,
+          adjustedDurationSec: s.durationSec,
+        }));
+        set(state => ({
+          presentations: [
+            ...state.presentations,
+            { id, name, sections: newSections, createdAt: now, updatedAt: now },
+          ],
+          activePresentationId: id,
+          mode: 'editor' as AppMode,
         }));
       },
 
