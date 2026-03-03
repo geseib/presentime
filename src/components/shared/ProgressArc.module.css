@@ -1,0 +1,32 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg {
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.trackCircle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+}
+
+.progressCircle {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s linear, stroke 0.5s ease;
+  filter: drop-shadow(0 0 8px var(--arc-color, #00E676));
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,24 @@
+.form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-panel);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.nameInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  padding: var(--space-xs) 0;
+}
+
+.nameInput:focus {
+  outline: none;
+  border-bottom-color: var(--color-accent);
+}

@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: var(--space-2xl);
+  overflow-y: auto;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.backButton {
+  font-size: var(--text-lg);
+}
+
+.nameInput {
+  flex: 1;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-sm) 0;
+  color: var(--color-text);
+  transition: border-color var(--transition-fast);
+}
+
+.nameInput:focus {
+  outline: none;
+  border-bottom-color: var(--color-accent);
+}
+
+.totalBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-panel);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.totalLabel {
+  color: var(--color-text-dim);
+  font-size: var(--text-sm);
+}
+
+.totalTime {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.sectionList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-text-dim);
+}
+
+.footer {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: var(--space-xl);
+}

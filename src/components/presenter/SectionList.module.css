@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-dim);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.colName {
+  flex: 1;
+  padding-left: calc(1.25rem + var(--space-sm));
+}
+
+.colTime {
+  width: 5rem;
+  text-align: right;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-sm);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  font-size: var(--text-sm);
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.active {
+  background: rgba(108, 99, 255, 0.1);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+}
+
+.statusIcon {
+  width: 1.25rem;
+  text-align: center;
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+}
+
+.sectionName {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.completed .sectionName {
+  color: var(--color-text-dim);
+  text-decoration: line-through;
+}
+
+.skipped .sectionName {
+  color: var(--color-text-dim);
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.adjusted {
+  color: var(--color-caution);
+  font-size: var(--text-xs);
+}
+
+.timingUnder {
+  color: #00E676;
+}
+
+.timingOver {
+  color: #FF1744;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.footerName {
+  flex: 1;
+  padding-left: calc(1.25rem + var(--space-sm));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-dim);
+}

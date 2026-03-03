@@ -1,0 +1,63 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.row:hover {
+  border-color: var(--color-text-dim);
+}
+
+.dragHandle {
+  cursor: grab;
+  color: var(--color-text-dim);
+  font-size: var(--text-lg);
+  touch-action: none;
+  user-select: none;
+  padding: var(--space-xs);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.index {
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.nameInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  padding: var(--space-xs) 0;
+}
+
+.nameInput:focus {
+  outline: none;
+  border-bottom-color: var(--color-accent);
+}
+
+.deleteBtn {
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.row:hover .deleteBtn {
+  opacity: 1;
+}
+
+.dragging {
+  opacity: 0.5;
+  box-shadow: var(--shadow-lg);
+}
