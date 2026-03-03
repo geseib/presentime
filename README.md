@@ -18,6 +18,12 @@ A presentation timer that helps speakers stay on track. Define sections with tim
 ### Progress — Planned vs actual as you advance
 ![Presenter view showing a completed section with checkmark](docs/screenshots/presenter-progress.png)
 
+### Manager — Import, export, and load samples
+![Manager view with Import button and presentation card showing export control](docs/screenshots/manager-with-export.png)
+
+### Empty State — Get started quickly with a sample
+![Empty state with Load Sample Presentation button](docs/screenshots/manager-empty-state.png)
+
 ## Why Presentime?
 
 Most presentation timers give you a single countdown. That's fine until you're 3 minutes over on slide 4 and have no idea if you can still fit the demo. Presentime tracks each section independently, redistributes overtime across remaining sections, and shows planned vs actual time so you always know where you stand.
@@ -33,6 +39,8 @@ Most presentation timers give you a single countdown. That's fine until you're 3
 - **Drag-and-drop reordering** — Rearrange sections in the editor by dragging
 - **Keyboard shortcuts** — Space to play/pause, Right Arrow to advance, Esc to exit
 - **Screen wake lock** — Display stays on during your presentation
+- **Import/export** — Export any presentation to a human-readable JSON file, import it on another device or share it with others
+- **Built-in sample** — One-click sample presentation so new users can see the format and jump right in
 - **Offline & local** — Everything runs in the browser. Presentations persist in localStorage
 
 ## Quick Start
@@ -60,6 +68,26 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 5. **Control the timer** — Space to play/pause, Right Arrow to complete the current section and advance
 
 The sidebar tracks every section with its status, planned time, and actual time once completed. The footer shows your running total.
+
+### Import & Export
+
+Export any presentation as a `.json` file using the download button (↓) on its card. The format is human-readable:
+
+```json
+{
+  "name": "Sample: Conference Talk",
+  "sections": [
+    { "name": "Introduction", "duration": "03:00" },
+    { "name": "Problem Statement", "duration": "05:00" },
+    { "name": "Proposed Solution", "duration": "10:00" },
+    { "name": "Live Demo", "duration": "08:00" },
+    { "name": "Q&A", "duration": "05:00" },
+    { "name": "Wrap-up", "duration": "02:00" }
+  ]
+}
+```
+
+Import a `.json` file using the **Import** button in the header. Invalid files show a descriptive error message. New users can click **Load Sample Presentation** on the empty state to get started immediately.
 
 ## Scripts
 
@@ -95,7 +123,8 @@ src/
 ├── store/            # Zustand stores (presentationStore, timerStore)
 ├── styles/           # Global CSS, design tokens, fonts
 ├── types/            # TypeScript type definitions
-├── utils/            # formatTime, parseDuration, redistributionEngine
+├── data/             # Built-in sample presentation
+├── utils/            # formatTime, parseDuration, importExport, redistributionEngine
 ├── App.tsx           # Top-level view router
 └── main.tsx          # Entry point
 ```
@@ -130,7 +159,6 @@ Contributions are welcome. Here's how to get started:
 ### Areas for Contribution
 
 - Accessibility improvements (screen reader support, ARIA labels)
-- Export/import presentations (JSON or share links)
 - Presentation history and analytics
 - Mobile-responsive presenter view
 - Test coverage (unit and E2E)
