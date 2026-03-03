@@ -1,11 +1,11 @@
 export const samplePresentation = {
-  name: 'Sample: Conference Talk',
+  name: 'The Hidden Cost of Context Switching',
   sections: [
-    { name: 'Introduction', durationSec: 180 },
-    { name: 'Problem Statement', durationSec: 300 },
-    { name: 'Proposed Solution', durationSec: 600 },
-    { name: 'Live Demo', durationSec: 480 },
-    { name: 'Q&A', durationSec: 300 },
-    { name: 'Wrap-up', durationSec: 120 },
+    { name: 'Opening Hook', durationSec: 120 },
+    { name: 'The Problem', durationSec: 240 },
+    { name: 'The Research', durationSec: 300 },
+    { name: 'Live Experiment', durationSec: 240 },
+    { name: 'The Solution', durationSec: 240 },
+    { name: 'Call to Action', durationSec: 60 },
   ],
 };

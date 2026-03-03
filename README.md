@@ -10,16 +10,16 @@ A presentation timer that helps speakers stay on track. Define sections with tim
 ## Screenshots
 
 ### Editor — Build your section lineup
-![Editor view showing sections with durations and drag-and-drop reordering](docs/screenshots/editor.png)
+![Editor view with six TED Talk sections and drag handles](docs/screenshots/editor.png)
 
-### Presenter — Live countdown with section tracking
-![Presenter view with overall and section timers running](docs/screenshots/presenter-running.png)
+### Presenter — Live countdown with pace tracking
+![Presenter view showing dual countdown rings, section sidebar with Planned/Actual columns, pace indicator reading +01:46 AHEAD, and running total footer](docs/screenshots/presenter-running.png)
 
 ### Progress — Planned vs actual as you advance
-![Presenter view showing a completed section with checkmark](docs/screenshots/presenter-progress.png)
+![Presenter view after completing a section early — Opening Hook shows checkmark with green actual time, pace indicator reads +05:26 AHEAD](docs/screenshots/presenter-progress.png)
 
 ### Manager — Import, export, and load samples
-![Manager view with Import button and presentation card showing export control](docs/screenshots/manager-with-export.png)
+![Manager view with Import button in header and presentation card showing export, duplicate, and delete controls](docs/screenshots/manager-with-export.png)
 
 ### Empty State — Get started quickly with a sample
 ![Empty state with Load Sample Presentation button](docs/screenshots/manager-empty-state.png)
@@ -31,10 +31,10 @@ Most presentation timers give you a single countdown. That's fine until you're 3
 ## Features
 
 - **Section-based timing** — Break your talk into named sections, each with its own time budget
-- **Live presenter view** — Large, readable timers for overall and current section countdowns
+- **Live presenter view** — Dual countdown rings for overall and current section, with the section name and index always visible
+- **Planned vs Actual sidebar** — Every section shows its planned duration and actual time once completed, with a running total footer
+- **Pace indicator** — Real-time `+MM:SS AHEAD` or `-MM:SS BEHIND` display, color-coded green/yellow/red so you know exactly where you stand
 - **Overtime redistribution** — Go over on one section and remaining sections automatically adjust (with a 15-second floor so nothing disappears)
-- **Planned vs Actual tracking** — Completed sections show both planned and actual time, color-coded green (under budget) or red (over)
-- **Pace indicator** — Visual gauge showing if you're ahead, on track, or behind
 - **Warning overlays** — Screen flashes yellow at 25% remaining, red at 10%, and pulses when overtime
 - **Drag-and-drop reordering** — Rearrange sections in the editor by dragging
 - **Keyboard shortcuts** — Space to play/pause, Right Arrow to advance, Esc to exit
@@ -67,7 +67,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 4. **Present** — Click "Start Presentation" to enter the presenter view
 5. **Control the timer** — Space to play/pause, Right Arrow to complete the current section and advance
 
-The sidebar tracks every section with its status, planned time, and actual time once completed. The footer shows your running total.
+The sidebar tracks every section with its status, planned duration, and actual time once completed. Sections finished under budget show green; over budget shows red. The pace indicator tells you how far ahead or behind schedule you are in real time, and the footer keeps a running total of planned vs actual.
 
 ### Import & Export
 
@@ -75,14 +75,14 @@ Export any presentation as a `.json` file using the download button (↓) on its
 
 ```json
 {
-  "name": "Sample: Conference Talk",
+  "name": "The Hidden Cost of Context Switching",
   "sections": [
-    { "name": "Introduction", "duration": "03:00" },
-    { "name": "Problem Statement", "duration": "05:00" },
-    { "name": "Proposed Solution", "duration": "10:00" },
-    { "name": "Live Demo", "duration": "08:00" },
-    { "name": "Q&A", "duration": "05:00" },
-    { "name": "Wrap-up", "duration": "02:00" }
+    { "name": "Opening Hook", "duration": "02:00" },
+    { "name": "The Problem", "duration": "04:00" },
+    { "name": "The Research", "duration": "05:00" },
+    { "name": "Live Experiment", "duration": "04:00" },
+    { "name": "The Solution", "duration": "04:00" },
+    { "name": "Call to Action", "duration": "01:00" }
   ]
 }
 ```
