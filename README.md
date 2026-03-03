@@ -7,6 +7,17 @@ A presentation timer that helps speakers stay on track. Define sections with tim
 ![Vite](https://img.shields.io/badge/Vite-6-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+## Screenshots
+
+### Editor — Build your section lineup
+![Editor view showing sections with durations and drag-and-drop reordering](docs/screenshots/editor.png)
+
+### Presenter — Live countdown with section tracking
+![Presenter view with overall and section timers running](docs/screenshots/presenter-running.png)
+
+### Progress — Planned vs actual as you advance
+![Presenter view showing a completed section with checkmark](docs/screenshots/presenter-progress.png)
+
 ## Why Presentime?
 
 Most presentation timers give you a single countdown. That's fine until you're 3 minutes over on slide 4 and have no idea if you can still fit the demo. Presentime tracks each section independently, redistributes overtime across remaining sections, and shows planned vs actual time so you always know where you stand.
