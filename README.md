@@ -7,33 +7,62 @@ A presentation timer that helps speakers stay on track. Define sections with tim
 ![Vite](https://img.shields.io/badge/Vite-6-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-## Screenshots
-
-### Editor — Build your section lineup
-![Editor view with six TED Talk sections and drag handles](docs/screenshots/editor.png)
-
-### Presenter — Live countdown with pace tracking
-![Presenter view showing dual countdown rings, section sidebar with Planned/Actual columns, pace indicator reading +01:46 AHEAD, and running total footer](docs/screenshots/presenter-running.png)
-
-### Progress — Planned vs actual as you advance
-![Presenter view after completing a section early — Opening Hook shows checkmark with green actual time, pace indicator reads +05:26 AHEAD](docs/screenshots/presenter-progress.png)
-
-### Manager — Import, export, and load samples
-![Manager view with Import button in header and presentation card showing export, duplicate, and delete controls](docs/screenshots/manager-with-export.png)
-
-### Empty State — Get started quickly with a sample
-![Empty state with Load Sample Presentation button](docs/screenshots/manager-empty-state.png)
-
 ## Why Presentime?
 
 Most presentation timers give you a single countdown. That's fine until you're 3 minutes over on slide 4 and have no idea if you can still fit the demo. Presentime tracks each section independently, redistributes overtime across remaining sections, and shows planned vs actual time so you always know where you stand.
+
+## Walkthrough
+
+### 1. Getting Started
+
+Click **Load Sample Presentation** to load a built-in example, or hit **+ New Presentation** to create your own. The **Import** button lets you load a presentation someone has shared with you.
+
+![Empty state with Import and Load Sample Presentation buttons](docs/screenshots/01-getting-started.png)
+
+### 2. Build Your Agenda
+
+Give each section a name and a time budget in MM:SS format. Drag the handles to reorder sections. The header shows the total duration across all sections.
+
+![Editor view with six TED Talk sections and drag handles](docs/screenshots/02-editor.png)
+
+### 3. Run Your Presentation
+
+Click **Present** to launch the live timer. Dual countdown rings show overall progress and current section time. The sidebar lists every section with its planned duration. Press **Space** to pause, **Right Arrow** to complete the current section and advance, or **Esc** to exit.
+
+![Presenter view showing dual countdown rings, section sidebar, and controls](docs/screenshots/03-presenter-running.png)
+
+### 4. Track Your Pace
+
+As you complete sections, the pace indicator tells you exactly how far ahead or behind schedule you are. Sections finished under budget show green actual times; over budget shows red. The screen flashes yellow at 25% remaining and red at 10%.
+
+| Ahead of schedule | Behind schedule |
+|:-:|:-:|
+| ![Ahead — green actual times, +03:56 AHEAD](docs/screenshots/04a-ahead.png) | ![Behind — red actual times, -01:52 BEHIND, yellow warning](docs/screenshots/04b-behind.png) |
+
+### 5. Running Totals
+
+The sidebar footer keeps a running total of planned vs actual time so you can see at a glance how your overall timing compares to the plan.
+
+![Sidebar showing all sections with Planned and Actual columns, TOTAL row at bottom](docs/screenshots/05-totals.png)
+
+### 6. Manage Your Presentations
+
+All your presentations live on the home screen. Each card shows section count and total duration. Use the action buttons to:
+
+- **Export** (↓) — Download as a shareable `.json` file
+- **Duplicate** (⧉) — Copy a presentation as a starting point
+- **Delete** (✕) — Remove a presentation
+
+Share a `.json` file with a colleague and they can **Import** it using the button in the header.
+
+![Manager view with three presentation cards showing export, duplicate, and delete controls](docs/screenshots/06-manager.png)
 
 ## Features
 
 - **Section-based timing** — Break your talk into named sections, each with its own time budget
 - **Live presenter view** — Dual countdown rings for overall and current section, with the section name and index always visible
 - **Planned vs Actual sidebar** — Every section shows its planned duration and actual time once completed, with a running total footer
-- **Pace indicator** — Real-time `+MM:SS AHEAD` or `-MM:SS BEHIND` display, color-coded green/yellow/red so you know exactly where you stand
+- **Pace indicator** — Real-time `+MM:SS AHEAD` or `-MM:SS BEHIND` display, color-coded green/yellow/red
 - **Overtime redistribution** — Go over on one section and remaining sections automatically adjust (with a 15-second floor so nothing disappears)
 - **Warning overlays** — Screen flashes yellow at 25% remaining, red at 10%, and pulses when overtime
 - **Drag-and-drop reordering** — Rearrange sections in the editor by dragging
@@ -59,17 +88,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - Node.js 18+
 - npm 9+
 
-## Usage
-
-1. **Create a presentation** — Click "New Presentation" on the home screen
-2. **Add sections** — Give each section a name and duration (MM:SS format)
-3. **Reorder** — Drag sections to rearrange the order
-4. **Present** — Click "Start Presentation" to enter the presenter view
-5. **Control the timer** — Space to play/pause, Right Arrow to complete the current section and advance
-
-The sidebar tracks every section with its status, planned duration, and actual time once completed. Sections finished under budget show green; over budget shows red. The pace indicator tells you how far ahead or behind schedule you are in real time, and the footer keeps a running total of planned vs actual.
-
-### Import & Export
+## Import & Export Format
 
 Export any presentation as a `.json` file using the download button (↓) on its card. The format is human-readable:
 
@@ -87,7 +106,7 @@ Export any presentation as a `.json` file using the download button (↓) on its
 }
 ```
 
-Import a `.json` file using the **Import** button in the header. Invalid files show a descriptive error message. New users can click **Load Sample Presentation** on the empty state to get started immediately.
+Import a `.json` file using the **Import** button in the header. Invalid files show a descriptive error message.
 
 ## Scripts
 
