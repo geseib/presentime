@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { useTimerStore } from '../../store/timerStore';
 import { useThemeStore } from '../../store/themeStore';
@@ -32,6 +32,8 @@ export function PresenterView() {
   const totalElapsedSec = useTimerStore(s => s.totalElapsedSec);
   const totalDurationSec = useTimerStore(s => s.totalDurationSec);
   const activeSection = useTimerStore(s => s.getActiveSection());
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Activate the rAF countdown loop
   useCountdown();
@@ -80,11 +82,12 @@ export function PresenterView() {
           break;
         case 'Escape':
           e.preventDefault();
-          if (presentation) openEditor(presentation.id);
+          if (sidebarOpen) setSidebarOpen(false);
+          else if (presentation) openEditor(presentation.id);
           break;
       }
     },
-    [timerStatus, start, pause, resume, completeCurrentSection, openEditor, presentation]
+    [timerStatus, start, pause, resume, completeCurrentSection, openEditor, presentation, sidebarOpen]
   );
 
   useEffect(() => {
@@ -116,6 +119,21 @@ export function PresenterView() {
       >
         ✕ Exit
       </Button>
+
+      <button
+        className={styles.sidebarToggle}
+        onClick={() => setSidebarOpen(o => !o)}
+        aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+      >
+        {sidebarOpen ? '✕' : '☰'}
+      </button>
+
+      {sidebarOpen && (
+        <div
+          className={styles.sidebarBackdrop}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       <div className={styles.main}>
         {timerStatus === 'finished' ? (
@@ -153,7 +171,7 @@ export function PresenterView() {
         )}
       </div>
 
-      <div className={styles.sidebar}>
+      <div className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
         <SectionList />
       </div>
     </div>

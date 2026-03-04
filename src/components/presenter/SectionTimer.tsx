@@ -2,6 +2,7 @@ import { useTimerStore } from '../../store/timerStore';
 import { usePresentationStore } from '../../store/presentationStore';
 import { useThemeStore } from '../../store/themeStore';
 import { useWarningState } from '../../hooks/useWarningState';
+import { useResponsiveSize } from '../../hooks/useResponsiveSize';
 import { formatTime } from '../../utils/timeUtils';
 import { WARNING_COLORS } from '../../utils/constants';
 import { THEME_CONFIGS } from './themeConfig';
@@ -16,6 +17,7 @@ export function SectionTimer() {
   const status = useTimerStore(s => s.status);
   const theme = useThemeStore(s => s.theme);
   const config = THEME_CONFIGS[theme];
+  const { sectionSize, sectionStroke } = useResponsiveSize(config);
 
   const remaining = activeSection
     ? activeSection.adjustedDurationSec - activeSection.elapsedSec
@@ -28,7 +30,7 @@ export function SectionTimer() {
       <div className={styles.wrapper}>
         <div
           className={styles.idle}
-          style={config.timersHorizontal ? { width: config.sectionSize, height: config.sectionSize } : undefined}
+          style={config.timersHorizontal ? { width: sectionSize, height: sectionSize } : undefined}
         >
           Press Start or Space to begin
         </div>
@@ -53,8 +55,8 @@ export function SectionTimer() {
     <div className={styles.wrapper}>
       <ProgressArc
         progress={progress}
-        size={config.sectionSize}
-        strokeWidth={config.sectionStroke}
+        size={sectionSize}
+        strokeWidth={sectionStroke}
         warningLevel={warningLevel}
         trackColor={config.trackColor}
       >

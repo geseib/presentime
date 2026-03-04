@@ -1,6 +1,7 @@
 import { useTimerStore } from '../../store/timerStore';
 import { useThemeStore } from '../../store/themeStore';
 import { useWarningState } from '../../hooks/useWarningState';
+import { useResponsiveSize } from '../../hooks/useResponsiveSize';
 import { formatTime } from '../../utils/timeUtils';
 import { WARNING_COLORS } from '../../utils/constants';
 import { THEME_CONFIGS } from './themeConfig';
@@ -12,6 +13,7 @@ export function OverallTimer() {
   const totalDurationSec = useTimerStore(s => s.totalDurationSec);
   const theme = useThemeStore(s => s.theme);
   const config = THEME_CONFIGS[theme];
+  const { overallSize, overallStroke } = useResponsiveSize(config);
 
   const remaining = totalDurationSec - totalElapsedSec;
   const progress = totalDurationSec > 0 ? Math.max(0, remaining / totalDurationSec) : 1;
@@ -21,8 +23,8 @@ export function OverallTimer() {
     <div className={styles.wrapper}>
       <ProgressArc
         progress={progress}
-        size={config.overallSize}
-        strokeWidth={config.overallStroke}
+        size={overallSize}
+        strokeWidth={overallStroke}
         warningLevel={warningLevel}
         trackColor={config.trackColor}
       >

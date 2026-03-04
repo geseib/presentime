@@ -68,6 +68,14 @@
   z-index: 150;
 }
 
+/* --- Compact: force stacked layout on mobile --- */
+@media (max-width: 599px) {
+  [data-theme="compact"] {
+    --presenter-timer-direction: column;
+    --presenter-timer-gap: var(--space-lg);
+  }
+}
+
 /* --- Minimal Light: light background, thin strokes, indigo accent --- */
 [data-theme="light"] {
   --color-bg: #F5F5FA;

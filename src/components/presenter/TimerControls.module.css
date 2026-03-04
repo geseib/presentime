@@ -10,3 +10,9 @@
   margin-top: var(--space-sm);
   text-align: center;
 }
+
+@media (max-width: 899px) {
+  .hint {
+    display: none;
+  }
+}
