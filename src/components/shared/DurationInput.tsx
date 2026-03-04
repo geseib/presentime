@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { parseDuration, formatTime } from '../../utils/timeUtils';
 import styles from './DurationInput.module.css';
 
@@ -10,6 +10,15 @@ interface DurationInputProps {
 
 export function DurationInput({ value, onChange, placeholder = 'MM:SS' }: DurationInputProps) {
   const [text, setText] = useState(() => formatTime(value));
+  const lastEmittedValue = useRef(value);
+
+  // Sync text when the parent resets value externally (e.g. after form submit)
+  useEffect(() => {
+    if (value !== lastEmittedValue.current) {
+      setText(formatTime(value));
+      lastEmittedValue.current = value;
+    }
+  }, [value]);
   const [isValid, setIsValid] = useState(true);
 
   const handleChange = useCallback(
@@ -20,6 +29,7 @@ export function DurationInput({ value, onChange, placeholder = 'MM:SS' }: Durati
       const parsed = parseDuration(raw);
       if (parsed !== null && parsed > 0) {
         setIsValid(true);
+        lastEmittedValue.current = parsed;
         onChange(parsed);
       } else {
         setIsValid(false);
