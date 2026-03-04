@@ -14,6 +14,7 @@ export interface Presentation {
 }
 
 export type AppMode = 'manager' | 'editor' | 'presenter';
+export type PresenterTheme = 'default' | 'compact' | 'high-contrast' | 'retro' | 'light';
 export type TimerStatus = 'idle' | 'running' | 'paused' | 'finished';
 export type WarningLevel = 'ok' | 'caution' | 'danger' | 'overtime';
 

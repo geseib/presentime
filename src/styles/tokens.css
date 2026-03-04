@@ -29,9 +29,9 @@
   --text-xl: 1.5rem;
   --text-2xl: 2rem;
   --text-3xl: 2.5rem;
-  --text-timer-section: clamp(3rem, 5vw, 5rem);
-  --text-timer-overall: clamp(4rem, 8vw, 8rem);
-  --text-section-name: clamp(1.25rem, 2.5vw, 2.5rem);
+  --text-timer-section: clamp(2.5rem, 4vw, 4rem);
+  --text-timer-overall: clamp(3.25rem, 6vw, 6rem);
+  --text-section-name: clamp(1.1rem, 2vw, 2rem);
 
   /* Spacing */
   --space-xs: 0.25rem;

@@ -12,6 +12,8 @@ interface ProgressArcProps {
   strokeWidth?: number;
   /** Warning level controls the color */
   warningLevel?: WarningLevel;
+  /** Override track circle stroke color */
+  trackColor?: string;
   /** Content to render inside the arc */
   children?: ReactNode;
 }
@@ -21,6 +23,7 @@ export function ProgressArc({
   size,
   strokeWidth = 6,
   warningLevel = 'ok',
+  trackColor,
   children,
 }: ProgressArcProps) {
   const radius = (size - strokeWidth) / 2;
@@ -43,6 +46,7 @@ export function ProgressArc({
           cy={size / 2}
           r={radius}
           strokeWidth={strokeWidth}
+          {...(trackColor ? { stroke: trackColor } : {})}
         />
         <circle
           className={styles.progressCircle}

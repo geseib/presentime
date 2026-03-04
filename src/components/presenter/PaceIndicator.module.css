@@ -16,3 +16,11 @@
   letter-spacing: 0.1em;
   opacity: 0.85;
 }
+
+.section {
+  font-family: var(--font-sans);
+  font-size: clamp(0.65rem, 1.1vw, 0.9rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: 0.6;
+}

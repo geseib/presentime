@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { TimerStatus, SectionRuntimeState, Presentation } from '../types';
-import { redistributeOvertime } from '../utils/redistributionEngine';
+import { redistributeOvertime, redistributeSavedTime } from '../utils/redistributionEngine';
 
 interface TimerState {
   status: TimerStatus;
@@ -122,9 +122,10 @@ export const useTimerStore = create<TimerState>()((set, get) => ({
       i === activeSectionIndex ? { ...s, status: 'completed' as const } : s
     );
 
-    // Redistribute overtime
+    // Redistribute time: shrink remaining if overrun, restore if finished early
     const completedSection = updated[activeSectionIndex];
     updated = redistributeOvertime(updated, completedSection.sectionId);
+    updated = redistributeSavedTime(updated, completedSection.sectionId);
 
     // Find next pending section
     const nextIndex = updated.findIndex(
@@ -153,6 +154,10 @@ export const useTimerStore = create<TimerState>()((set, get) => ({
     let updated = sections.map((s, i) =>
       i === activeSectionIndex ? { ...s, status: 'skipped' as const } : s
     );
+
+    // Restore saved time from skipped section back to remaining sections
+    const skippedSection = updated[activeSectionIndex];
+    updated = redistributeSavedTime(updated, skippedSection.sectionId);
 
     const nextIndex = updated.findIndex(
       (s, i) => i > activeSectionIndex && s.status === 'pending'

@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import { usePresentationStore } from '../../store/presentationStore';
 import { useTimerStore } from '../../store/timerStore';
+import { useThemeStore } from '../../store/themeStore';
 import { useCountdown } from '../../hooks/useCountdown';
 import { useWakeLock } from '../../hooks/useWakeLock';
 import { useWarningState } from '../../hooks/useWarningState';
@@ -10,13 +11,16 @@ import { SectionTimer } from './SectionTimer';
 import { SectionList } from './SectionList';
 import { TimerControls } from './TimerControls';
 import { PaceIndicator } from './PaceIndicator';
+import { ThemeSelector } from './ThemeSelector';
 import { WarningOverlay } from '../shared/WarningOverlay';
 import { Button } from '../shared/Button';
 import styles from './PresenterView.module.css';
+import './themes.css';
 
 export function PresenterView() {
   const presentation = usePresentationStore(s => s.getActivePresentation());
   const activePresentationId = usePresentationStore(s => s.activePresentationId);
+  const theme = useThemeStore(s => s.theme);
   const openEditor = usePresentationStore(s => s.openEditor);
   const timerStatus = useTimerStore(s => s.status);
   const initialize = useTimerStore(s => s.initialize);
@@ -99,8 +103,10 @@ export function PresenterView() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-theme={theme}>
       <WarningOverlay warningLevel={timerStatus === 'running' ? overlayWarning : 'ok'} />
+
+      <ThemeSelector />
 
       <Button
         variant="ghost"

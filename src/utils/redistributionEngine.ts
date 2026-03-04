@@ -80,3 +80,62 @@ export function redistributeOvertime(
     return s;
   });
 }
+
+/**
+ * When a section finishes early or is skipped, redistribute the saved time
+ * back to remaining pending sections, restoring them toward their original
+ * durations proportionally based on how much each was previously reduced.
+ */
+export function redistributeSavedTime(
+  sections: SectionRuntimeState[],
+  completedSectionId: string
+): SectionRuntimeState[] {
+  const completedIdx = sections.findIndex(s => s.sectionId === completedSectionId);
+  if (completedIdx === -1) return sections;
+
+  const completed = sections[completedIdx];
+  const savedTime = completed.adjustedDurationSec - completed.elapsedSec;
+
+  // No time saved
+  if (savedTime <= 0) return sections;
+
+  const remaining = sections.filter(
+    s => s.status === 'pending' && s.sectionId !== completedSectionId
+  );
+
+  if (remaining.length === 0) return sections;
+
+  // How much headroom each section has (how much it was reduced from original)
+  const totalHeadroom = remaining.reduce(
+    (sum, s) => sum + Math.max(0, s.originalDurationSec - s.adjustedDurationSec),
+    0
+  );
+
+  // If no sections were reduced, nothing to restore
+  if (totalHeadroom <= 0) return sections;
+
+  // Only restore up to what was previously taken away
+  const timeToDistribute = Math.min(savedTime, totalHeadroom);
+  const adjustments = new Map<string, number>();
+
+  for (const section of remaining) {
+    const headroom = Math.max(0, section.originalDurationSec - section.adjustedDurationSec);
+    if (headroom <= 0) continue;
+
+    const proportion = headroom / totalHeadroom;
+    const addition = timeToDistribute * proportion;
+    const newDuration = Math.min(
+      section.adjustedDurationSec + addition,
+      section.originalDurationSec
+    );
+    adjustments.set(section.sectionId, Math.round(newDuration));
+  }
+
+  return sections.map(s => {
+    const adj = adjustments.get(s.sectionId);
+    if (adj !== undefined) {
+      return { ...s, adjustedDurationSec: adj };
+    }
+    return s;
+  });
+}

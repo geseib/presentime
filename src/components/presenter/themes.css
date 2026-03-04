@@ -1,0 +1,84 @@
+/* ============================================
+   Presenter Theme Overrides
+   Applied via data-theme attribute on container
+   ============================================ */
+
+/* --- Default: no overrides needed, uses tokens.css values --- */
+[data-theme="default"] {
+  --presenter-timer-direction: column;
+  --presenter-timer-gap: var(--space-2xl);
+}
+
+/* --- Compact: side-by-side rings, scaled-down fonts --- */
+[data-theme="compact"] {
+  --presenter-timer-direction: row;
+  --presenter-timer-gap: 4rem;
+  --text-timer-overall: clamp(3rem, 5.5vw, 5rem);
+  --text-timer-section: clamp(2.25rem, 4vw, 3.5rem);
+  --text-section-name: clamp(1rem, 1.8vw, 1.5rem);
+}
+
+/* --- High Contrast: pure black, cyan accent, larger type --- */
+[data-theme="high-contrast"] {
+  --color-bg: #000000;
+  --color-panel: #0A0A0A;
+  --color-panel-hover: #1A1A1A;
+  --color-text: #FFFFFF;
+  --color-text-dim: #AAAAAA;
+  --color-border: #444444;
+  --color-accent: #00E5FF;
+  --color-accent-hover: #40EFFF;
+  --shadow-glow: 0 0 20px rgba(0, 229, 255, 0.3);
+  --presenter-timer-direction: column;
+  --presenter-timer-gap: var(--space-2xl);
+  --text-timer-overall: clamp(3.75rem, 7vw, 7rem);
+  --text-timer-section: clamp(2.75rem, 5vw, 4.5rem);
+  --text-section-name: clamp(1.25rem, 2.5vw, 2.25rem);
+}
+
+/* --- Retro Terminal: green-on-black CRT aesthetic --- */
+[data-theme="retro"] {
+  --color-bg: #0A0A0A;
+  --color-panel: #0D1A0D;
+  --color-panel-hover: #142014;
+  --color-text: #00FF41;
+  --color-text-dim: #00AA2A;
+  --color-border: #003300;
+  --color-accent: #00FF41;
+  --color-accent-hover: #33FF66;
+  --shadow-glow: 0 0 20px rgba(0, 255, 65, 0.3);
+  --presenter-timer-direction: column;
+  --presenter-timer-gap: var(--space-2xl);
+  --font-retro-glow: 0 0 8px rgba(0, 255, 65, 0.5);
+  --color-primary-text: #0A0A0A;
+}
+
+[data-theme="retro"]::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 150;
+}
+
+/* --- Minimal Light: light background, thin strokes, indigo accent --- */
+[data-theme="light"] {
+  --color-bg: #F5F5FA;
+  --color-panel: #FFFFFF;
+  --color-panel-hover: #EEEEF5;
+  --color-text: #1A1A2E;
+  --color-text-dim: #6B6B80;
+  --color-border: #D0D0E0;
+  --color-accent: #5C6BC0;
+  --color-accent-hover: #7986CB;
+  --shadow-glow: none;
+  --presenter-timer-direction: column;
+  --presenter-timer-gap: var(--space-2xl);
+}

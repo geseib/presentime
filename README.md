@@ -57,13 +57,50 @@ Share a `.json` file with a colleague and they can **Import** it using the butto
 
 ![Manager view with three presentation cards showing export, duplicate, and delete controls](docs/screenshots/06-manager.png)
 
+## Presenter Themes
+
+Click the palette icon in the top-left corner of the presenter view to switch themes. Your selection persists across sessions via localStorage.
+
+| Theme | Preview |
+|-------|---------|
+| **Default** — Dark background, purple accent, stacked rings | <img src="docs/screenshots/theme-default.png" width="400" /> |
+| **Compact** — Side-by-side rings with labels inside, larger fonts | <img src="docs/screenshots/theme-compact.png" width="400" /> |
+| **High Contrast** — Pure black, bold strokes, larger rings for distance readability | <img src="docs/screenshots/theme-high-contrast.png" width="400" /> |
+| **Retro Terminal** — Green-on-black CRT aesthetic with phosphor glow and scanlines | <img src="docs/screenshots/theme-retro.png" width="400" /> |
+| **Minimal Light** — Light background, thin strokes, indigo accent | <img src="docs/screenshots/theme-light.png" width="400" /> |
+
+Each theme customizes colors, ring sizes, stroke weights, typography, and layout direction. Warning colors (green/yellow/red) stay constant across all themes for consistency.
+
+## Time Warnings
+
+As section or overall timers run low, colors shift automatically:
+
+| State | Color | Trigger |
+|-------|-------|---------|
+| OK | Green (`#00E676`) | > 25% remaining |
+| Caution | Yellow (`#FFD600`) | < 25% remaining |
+| Danger | Red (`#FF1744`) | < 10% remaining |
+| Overtime | Red (flashing) | Timer exceeded |
+
+The screen overlay flashes at the same thresholds, with increasing urgency. Warning colors are consistent across all themes.
+
+## Smart Time Redistribution
+
+Presentime dynamically adjusts section budgets so you always know where you stand:
+
+- **Overrun a section?** Remaining sections shrink proportionally to absorb the deficit. A minimum floor (15s) prevents any section from being eliminated entirely.
+- **Finish early or skip a section?** Saved time flows back to remaining sections, restoring them toward their original budgets proportionally based on how much each was previously reduced.
+
+The **pace indicator** always measures against the *original* plan — redistribution never masks how far ahead or behind you truly are. A 2-second dead zone around zero displays "ON PACE" to prevent jitter, and the current section name is shown for context (e.g. `-01:33 BEHIND into The Problem`).
+
 ## Features
 
 - **Section-based timing** — Break your talk into named sections, each with its own time budget
 - **Live presenter view** — Dual countdown rings for overall and current section, with the section name and index always visible
 - **Planned vs Actual sidebar** — Every section shows its planned duration and actual time once completed, with a running total footer
-- **Pace indicator** — Real-time `+MM:SS AHEAD` or `-MM:SS BEHIND` display, color-coded green/yellow/red
-- **Overtime redistribution** — Go over on one section and remaining sections automatically adjust (with a 15-second floor so nothing disappears)
+- **Pace indicator** — Real-time `+MM:SS AHEAD` or `-MM:SS BEHIND` display measured against the original plan, with section context (e.g. "into The Problem")
+- **Smart time redistribution** — Overruns compress remaining sections; early finishes and skips restore time back toward original budgets
+- **5 presenter themes** — Switch visual styles on the fly via the palette icon; your choice persists to localStorage
 - **Warning overlays** — Screen flashes yellow at 25% remaining, red at 10%, and pulses when overtime
 - **Drag-and-drop reordering** — Rearrange sections in the editor by dragging
 - **Keyboard shortcuts** — Space to play/pause, Right Arrow to advance, Esc to exit
@@ -136,10 +173,10 @@ src/
 ├── components/
 │   ├── editor/       # Presentation editing (sections, durations, reorder)
 │   ├── manager/      # Home screen (create, list, delete presentations)
-│   ├── presenter/    # Live timer view (timers, controls, section list)
-│   └── shared/       # Reusable UI (Button, WarningOverlay)
+│   ├── presenter/    # Live timer view (timers, controls, section list, themes)
+│   └── shared/       # Reusable UI (Button, ProgressArc, WarningOverlay)
 ├── hooks/            # useCountdown, useWakeLock, useWarningState
-├── store/            # Zustand stores (presentationStore, timerStore)
+├── store/            # Zustand stores (presentationStore, timerStore, themeStore)
 ├── styles/           # Global CSS, design tokens, fonts
 ├── types/            # TypeScript type definitions
 ├── data/             # Built-in sample presentation
@@ -181,7 +218,6 @@ Contributions are welcome. Here's how to get started:
 - Presentation history and analytics
 - Mobile-responsive presenter view
 - Test coverage (unit and E2E)
-- Themes and customization
 
 ## License
 
