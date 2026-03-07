@@ -26,11 +26,13 @@
   overflow: hidden;
 }
 
-.exitButton {
+.topButtons {
   position: absolute;
   top: var(--space-lg);
   right: calc(380px + var(--space-lg));
   z-index: 10;
+  display: flex;
+  gap: var(--space-sm);
 }
 
 .timers {
@@ -105,7 +107,7 @@
     min-width: 300px;
   }
 
-  .exitButton {
+  .topButtons {
     right: calc(300px + var(--space-lg));
   }
 }
@@ -140,9 +142,8 @@
     z-index: 290;
   }
 
-  .exitButton {
-    right: var(--space-lg);
-    /* Shift left to not overlap toggle */
+  .topButtons {
+    /* Shift left to not overlap sidebar toggle */
     right: calc(44px + var(--space-lg) + var(--space-md));
   }
 

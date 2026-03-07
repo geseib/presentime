@@ -1,7 +1,7 @@
 import { useTimerStore } from '../../store/timerStore';
 import { usePresentationStore } from '../../store/presentationStore';
 import { useThemeStore } from '../../store/themeStore';
-import { useWarningState } from '../../hooks/useWarningState';
+import { useSectionWarning } from '../../hooks/useSectionWarning';
 import { useResponsiveSize } from '../../hooks/useResponsiveSize';
 import { formatTime } from '../../utils/timeUtils';
 import { WARNING_COLORS } from '../../utils/constants';
@@ -9,7 +9,11 @@ import { THEME_CONFIGS } from './themeConfig';
 import { ProgressArc } from '../shared/ProgressArc';
 import styles from './SectionTimer.module.css';
 
-export function SectionTimer() {
+interface SectionTimerProps {
+  onClick?: () => void;
+}
+
+export function SectionTimer({ onClick }: SectionTimerProps) {
   const activeSection = useTimerStore(s => s.getActiveSection());
   const activeSectionIndex = useTimerStore(s => s.activeSectionIndex);
   const sections = useTimerStore(s => s.sections);
@@ -23,11 +27,11 @@ export function SectionTimer() {
     ? activeSection.adjustedDurationSec - activeSection.elapsedSec
     : 0;
   const totalForWarning = activeSection?.adjustedDurationSec ?? 0;
-  const warningLevel = useWarningState(remaining, totalForWarning);
+  const warningLevel = useSectionWarning(remaining, totalForWarning);
 
   if (status === 'idle') {
     return (
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
         <div
           className={styles.idle}
           style={config.timersHorizontal ? { width: sectionSize, height: sectionSize } : undefined}
@@ -52,7 +56,7 @@ export function SectionTimer() {
   const sectionInfo = `Section ${activeSectionIndex + 1} of ${sections.length}`;
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
       <ProgressArc
         progress={progress}
         size={sectionSize}

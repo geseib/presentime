@@ -8,3 +8,12 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>
 );
+
+if (import.meta.env.DEV) {
+  import('./store/timerStore').then(({ useTimerStore }) => {
+    (window as any).__timerStore = useTimerStore;
+  });
+  import('./store/presentationStore').then(({ usePresentationStore }) => {
+    (window as any).__presentationStore = usePresentationStore;
+  });
+}

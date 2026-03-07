@@ -1,10 +1,5 @@
 import type { WarningLevel } from '../types';
 
-export const WARNING_THRESHOLDS = {
-  caution: 0.25,
-  danger: 0.10,
-} as const;
-
 export const WARNING_COLORS: Record<WarningLevel, string> = {
   ok: '#00E676',
   caution: '#FFD600',

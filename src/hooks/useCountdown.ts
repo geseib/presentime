@@ -2,15 +2,14 @@ import { useEffect, useRef } from 'react';
 import { useTimerStore } from '../store/timerStore';
 
 /**
- * requestAnimationFrame-based timer loop.
+ * setInterval-based timer loop.
  * Uses performance.now() deltas to avoid drift.
- * Automatically pauses when the tab is backgrounded (rAF stops firing).
+ * Keeps ticking even when the window is backgrounded (e.g., popup focused).
  */
 export function useCountdown() {
   const status = useTimerStore(s => s.status);
   const tick = useTimerStore(s => s.tick);
   const lastTimeRef = useRef<number | null>(null);
-  const rafRef = useRef<number>(0);
 
   useEffect(() => {
     if (status !== 'running') {
@@ -18,22 +17,22 @@ export function useCountdown() {
       return;
     }
 
-    const loop = (now: number) => {
+    // In test mode, tests use tickTimer() for deterministic time control
+    if ((window as any).__PRESENTIME_TEST_MODE) return;
+
+    lastTimeRef.current = performance.now();
+
+    const interval = setInterval(() => {
+      const now = performance.now();
       if (lastTimeRef.current !== null) {
         const deltaSec = (now - lastTimeRef.current) / 1000;
-        // Cap delta to 0.1s to handle tab-return gracefully
-        // (prevents huge jumps when tab was backgrounded)
-        const clampedDelta = Math.min(deltaSec, 0.1);
-        tick(clampedDelta);
+        tick(deltaSec);
       }
       lastTimeRef.current = now;
-      rafRef.current = requestAnimationFrame(loop);
-    };
-
-    rafRef.current = requestAnimationFrame(loop);
+    }, 100);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      clearInterval(interval);
       lastTimeRef.current = null;
     };
   }, [status, tick]);

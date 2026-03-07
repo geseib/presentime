@@ -1,75 +1,57 @@
 import { useTimerStore } from '../../store/timerStore';
-import { usePresentationStore } from '../../store/presentationStore';
 import { useThemeStore } from '../../store/themeStore';
+import { usePaceEngine } from '../../hooks/usePaceEngine';
 import { formatTime } from '../../utils/timeUtils';
+import { WARNING_COLORS } from '../../utils/constants';
+import { PACE_DEAD_ZONE_SEC } from '../../utils/paceEngine';
 import styles from './PaceIndicator.module.css';
 
-const DEAD_ZONE = 2; // seconds — suppress jitter around zero
-const COLOR_AHEAD = '#00E676';
-const COLOR_ON_PACE = '#00E676';
-const COLOR_SLIGHTLY_BEHIND = '#FFD600';
-const COLOR_FAR_BEHIND = '#FF1744';
-
 export function PaceIndicator() {
-  const sections = useTimerStore(s => s.sections);
   const status = useTimerStore(s => s.status);
-  const totalElapsedSec = useTimerStore(s => s.totalElapsedSec);
-  const totalDurationSec = useTimerStore(s => s.totalDurationSec);
-  const presentation = usePresentationStore(s => s.getActivePresentation());
   const theme = useThemeStore(s => s.theme);
+  const { pace, projection, recovery, trend } = usePaceEngine();
 
   if (status === 'idle' || status === 'finished') return null;
 
-  // Compare time remaining vs ORIGINAL planned content still to cover.
-  // Uses originalDurationSec so redistribution doesn't mask overruns.
-  const timeRemaining = totalDurationSec - totalElapsedSec;
-  let contentRemaining = 0;
-  let activeSectionId: string | null = null;
-  for (const s of sections) {
-    if (s.status === 'active') {
-      contentRemaining += s.originalDurationSec - s.elapsedSec;
-      activeSectionId = s.sectionId;
-    } else if (s.status === 'pending') {
-      contentRemaining += s.originalDurationSec;
-    }
-  }
-  const offsetSec = timeRemaining - contentRemaining;
+  const color = WARNING_COLORS[projection.warningLevel];
+  const noGlow = theme === 'light';
 
-  const sectionName = activeSectionId
-    ? presentation?.sections.find(s => s.id === activeSectionId)?.name
-    : null;
-
-  const isOnPace = Math.abs(offsetSec) <= DEAD_ZONE;
-
-  const color = isOnPace
-    ? COLOR_ON_PACE
-    : offsetSec > 0
-      ? COLOR_AHEAD
-      : offsetSec > -120
-        ? COLOR_SLIGHTLY_BEHIND
-        : COLOR_FAR_BEHIND;
-
-  let timeDisplay: string;
-  let label: string;
-
-  if (isOnPace) {
-    timeDisplay = '';
-    label = 'ON PACE';
+  // Row 1: Projected finish
+  let projectionText: string;
+  if (Math.abs(projection.deltaSeconds) <= PACE_DEAD_ZONE_SEC) {
+    projectionText = 'ON PACE';
+  } else if (projection.deltaSeconds > 0) {
+    projectionText = `Finishing ${formatTime(Math.abs(projection.deltaSeconds))} early`;
   } else {
-    const prefix = offsetSec > 0 ? '+' : '-';
-    timeDisplay = `${prefix}${formatTime(Math.abs(offsetSec))}`;
-    label = offsetSec > 0 ? 'AHEAD' : 'BEHIND';
+    projectionText = `Finishing ${formatTime(Math.abs(projection.deltaSeconds))} over`;
   }
+
+  // Trend arrow
+  let trendArrow = '';
+  if (trend.direction === 'improving') trendArrow = '\u2191';
+  else if (trend.direction === 'worsening') trendArrow = '\u2193';
+
+  // Row 2: Recovery guidance (only when behind)
+  const showRecovery = !pace.isOnPace && pace.offsetSec < -PACE_DEAD_ZONE_SEC && recovery.savePerSectionSec > 0;
 
   return (
     <div
       className={styles.wrapper}
-      style={{ color, textShadow: theme === 'light' ? 'none' : `0 0 12px ${color}40` }}
+      style={{ color, textShadow: noGlow ? 'none' : `0 0 12px ${color}40` }}
     >
-      {timeDisplay && <span>{timeDisplay}</span>}
-      <span className={styles.label}>{label}</span>
-      {sectionName && (
-        <span className={styles.section}>into {sectionName}</span>
+      <div className={styles.projection}>
+        <span>{projectionText}</span>
+        {trendArrow && <span className={styles.trend}>{trendArrow}</span>}
+      </div>
+      {showRecovery && (
+        <div className={styles.recovery}>
+          <span className={styles.recoveryItem}>
+            Save {recovery.savePerSectionSec}s/section
+          </span>
+          <span className={styles.recoveryItem}>
+            Wrap up by {formatTime(recovery.wrapUpByElapsedSec)}
+          </span>
+        </div>
       )}
     </div>
   );

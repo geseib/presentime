@@ -1,0 +1,96 @@
+/* ===== Landscape (default) ===== */
+.container {
+  width: 100%;
+  height: 100%;
+  background: #0a0a0f;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  overflow: hidden;
+}
+
+.batteries {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
+  min-height: 0;
+}
+
+.divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  align-self: stretch;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controlButton {
+  width: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  padding: 0;
+}
+
+.controlButton:nth-child(2n) {
+  border-right: none;
+}
+
+.controlButton:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.controlButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ===== Portrait (tall window) ===== */
+@media (max-aspect-ratio: 1/1) {
+  .container {
+    flex-direction: column;
+  }
+
+  .batteries {
+    flex-direction: column;
+  }
+
+  .divider {
+    width: auto;
+    height: 1px;
+    align-self: stretch;
+  }
+
+  .controls {
+    flex-direction: row;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .controlButton {
+    min-height: 44px;
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: none;
+  }
+
+  .controlButton:last-child {
+    border-right: none;
+  }
+}

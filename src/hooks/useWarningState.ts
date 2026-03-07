@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 import type { WarningLevel } from '../types';
-import { WARNING_THRESHOLDS } from '../utils/constants';
 
 /**
- * Derive warning level from remaining time ratio.
+ * Derive warning level from remaining time ratio (percentage-based).
+ * Used for the overall timer ring and total battery bar.
+ * For section-level warnings, use useSectionWarning instead — it adds
+ * absolute floor thresholds for consistent reaction time.
  */
 export function useWarningState(
   remainingSec: number,
@@ -14,8 +16,8 @@ export function useWarningState(
     if (remainingSec < 0) return 'overtime';
 
     const ratio = remainingSec / totalSec;
-    if (ratio <= WARNING_THRESHOLDS.danger) return 'danger';
-    if (ratio <= WARNING_THRESHOLDS.caution) return 'caution';
+    if (ratio <= 0.10) return 'danger';
+    if (ratio <= 0.25) return 'caution';
     return 'ok';
   }, [remainingSec, totalSec]);
 }
