@@ -15,7 +15,7 @@ Most presentation timers give you a single countdown. That's fine until you're 3
 
 ### 1. Getting Started
 
-Click **Load Sample Presentation** to load a built-in example, or hit **+ New Presentation** to create your own. The **Import** button lets you load a presentation someone has shared with you.
+Four built-in templates are always visible in the **Templates** section — click any template to create an editable copy. Hit **+ New Presentation** to start from scratch, or use the **Import** button to load a presentation someone has shared with you.
 
 ![Empty state with Import and Load Sample Presentation buttons](docs/screenshots/01-getting-started.png)
 
@@ -106,7 +106,7 @@ The **pace indicator** always measures against the *original* plan — redistrib
 - **Keyboard shortcuts** — Space to play/pause, Right Arrow to advance, Esc to exit
 - **Screen wake lock** — Display stays on during your presentation
 - **Import/export** — Export any presentation to a human-readable JSON file, import it on another device or share it with others
-- **Built-in sample** — One-click sample presentation so new users can see the format and jump right in
+- **Built-in templates** — Four ready-to-use presentation templates (Quarterly Team Update, Project Pitch, Workshop / Training Session, Lightning Talk) that can be copied and customized
 - **Offline & local** — Everything runs in the browser. Presentations persist in localStorage
 
 ## Quick Start
@@ -179,7 +179,7 @@ src/
 ├── store/            # Zustand stores (presentationStore, timerStore, themeStore)
 ├── styles/           # Global CSS, design tokens, fonts
 ├── types/            # TypeScript type definitions
-├── data/             # Built-in sample presentation
+├── data/             # Built-in system presentation templates
 ├── utils/            # formatTime, parseDuration, importExport, redistributionEngine
 ├── App.tsx           # Top-level view router
 └── main.tsx          # Entry point

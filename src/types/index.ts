@@ -11,6 +11,7 @@ export interface Presentation {
   sections: Section[];
   createdAt: number;
   updatedAt: number;
+  isSystem?: boolean;
 }
 
 export type AppMode = 'manager' | 'editor' | 'presenter';

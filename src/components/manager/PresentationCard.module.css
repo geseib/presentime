@@ -16,12 +16,31 @@
   transform: translateY(-2px);
 }
 
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+
 .name {
   font-size: var(--text-lg);
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-dim);
+  background: var(--color-border);
+  padding: 0.1em 0.5em;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
 }
 
 .meta {

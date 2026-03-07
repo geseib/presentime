@@ -14,6 +14,8 @@ export function PresentationCard({ presentation }: PresentationCardProps) {
   const duplicatePresentation = usePresentationStore(s => s.duplicatePresentation);
   const deletePresentation = usePresentationStore(s => s.deletePresentation);
 
+  const isSystem = presentation.isSystem === true;
+
   const totalDuration = presentation.sections.reduce(
     (sum, s) => sum + s.originalDurationSec,
     0
@@ -38,7 +40,10 @@ export function PresentationCard({ presentation }: PresentationCardProps) {
 
   return (
     <div className={styles.card} onClick={() => openEditor(presentation.id)}>
-      <div className={styles.name}>{presentation.name}</div>
+      <div className={styles.nameRow}>
+        <span className={styles.name}>{presentation.name}</span>
+        {isSystem && <span className={styles.badge}>TEMPLATE</span>}
+      </div>
       <div className={styles.meta}>
         <span>{presentation.sections.length} sections</span>
         <span>{formatTime(totalDuration)}</span>
@@ -47,12 +52,14 @@ export function PresentationCard({ presentation }: PresentationCardProps) {
         <Button variant="ghost" size="icon" onClick={handleExport} title="Export">
           ↓
         </Button>
-        <Button variant="ghost" size="icon" onClick={handleDuplicate} title="Duplicate">
+        <Button variant="ghost" size="icon" onClick={handleDuplicate} title={isSystem ? 'Use Template' : 'Duplicate'}>
           ⧉
         </Button>
-        <Button variant="ghost" size="icon" onClick={handleDelete} title="Delete">
-          ✕
-        </Button>
+        {!isSystem && (
+          <Button variant="ghost" size="icon" onClick={handleDelete} title="Delete">
+            ✕
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,34 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { AppMode, Presentation, Section } from '../types';
+import { systemPresentationData } from '../data/systemPresentations';
+
+// Stable IDs for system presentations so they don't duplicate on reload
+const SYSTEM_IDS = [
+  'system-quarterly-team-update',
+  'system-project-pitch',
+  'system-workshop-training-session',
+  'system-lightning-talk',
+];
+
+function buildSystemPresentations(): Presentation[] {
+  const now = Date.now();
+  return systemPresentationData.map((data, i) => ({
+    id: SYSTEM_IDS[i],
+    name: data.name,
+    isSystem: true,
+    createdAt: now,
+    updatedAt: now,
+    sections: data.sections.map((s, j) => ({
+      id: `${SYSTEM_IDS[i]}-section-${j}`,
+      name: s.name,
+      originalDurationSec: s.durationSec,
+      adjustedDurationSec: s.durationSec,
+    })),
+  }));
+}
+
+export const systemPresentations = buildSystemPresentations();
 
 interface PresentationState {
   presentations: Presentation[];
@@ -30,6 +58,11 @@ interface PresentationState {
 
   // Selectors
   getActivePresentation: () => Presentation | null;
+  getAllPresentations: () => Presentation[];
+}
+
+function isSystemPresentation(id: string): boolean {
+  return SYSTEM_IDS.includes(id);
 }
 
 export const usePresentationStore = create<PresentationState>()(
@@ -41,7 +74,35 @@ export const usePresentationStore = create<PresentationState>()(
 
       setMode: (mode) => set({ mode }),
 
-      openEditor: (id) => set({ mode: 'editor', activePresentationId: id }),
+      openEditor: (id) => {
+        if (isSystemPresentation(id)) {
+          // Copy-on-edit: duplicate the system presentation as a user presentation
+          const source = systemPresentations.find(p => p.id === id);
+          if (!source) return;
+          const newId = crypto.randomUUID();
+          const now = Date.now();
+          set(state => ({
+            presentations: [
+              ...state.presentations,
+              {
+                ...source,
+                id: newId,
+                isSystem: undefined,
+                sections: source.sections.map(s => ({
+                  ...s,
+                  id: crypto.randomUUID(),
+                })),
+                createdAt: now,
+                updatedAt: now,
+              },
+            ],
+            activePresentationId: newId,
+            mode: 'editor' as AppMode,
+          }));
+        } else {
+          set({ mode: 'editor', activePresentationId: id });
+        }
+      },
 
       openPresenter: (id) => set({ mode: 'presenter', activePresentationId: id }),
 
@@ -62,7 +123,9 @@ export const usePresentationStore = create<PresentationState>()(
       },
 
       duplicatePresentation: (id) => {
-        const source = get().presentations.find(p => p.id === id);
+        // For system presentations, look in systemPresentations array
+        const allPresentations = [...systemPresentations, ...get().presentations];
+        const source = allPresentations.find(p => p.id === id);
         if (!source) return;
         const newId = crypto.randomUUID();
         const now = Date.now();
@@ -72,7 +135,8 @@ export const usePresentationStore = create<PresentationState>()(
             {
               ...source,
               id: newId,
-              name: `${source.name} (copy)`,
+              isSystem: undefined,
+              name: source.isSystem ? source.name : `${source.name} (copy)`,
               sections: source.sections.map(s => ({
                 ...s,
                 id: crypto.randomUUID(),
@@ -85,6 +149,7 @@ export const usePresentationStore = create<PresentationState>()(
       },
 
       deletePresentation: (id) => {
+        if (isSystemPresentation(id)) return;
         set(state => ({
           presentations: state.presentations.filter(p => p.id !== id),
           activePresentationId:
@@ -93,6 +158,7 @@ export const usePresentationStore = create<PresentationState>()(
       },
 
       updatePresentationName: (id, name) => {
+        if (isSystemPresentation(id)) return;
         set(state => ({
           presentations: state.presentations.map(p =>
             p.id === id ? { ...p, name, updatedAt: Date.now() } : p
@@ -101,6 +167,7 @@ export const usePresentationStore = create<PresentationState>()(
       },
 
       addSection: (presentationId, name, durationSec) => {
+        if (isSystemPresentation(presentationId)) return;
         const section: Section = {
           id: crypto.randomUUID(),
           name,
@@ -117,6 +184,7 @@ export const usePresentationStore = create<PresentationState>()(
       },
 
       updateSection: (presentationId, sectionId, updates) => {
+        if (isSystemPresentation(presentationId)) return;
         set(state => ({
           presentations: state.presentations.map(p =>
             p.id === presentationId
@@ -140,6 +208,7 @@ export const usePresentationStore = create<PresentationState>()(
       },
 
       deleteSection: (presentationId, sectionId) => {
+        if (isSystemPresentation(presentationId)) return;
         set(state => ({
           presentations: state.presentations.map(p =>
             p.id === presentationId
@@ -154,6 +223,7 @@ export const usePresentationStore = create<PresentationState>()(
       },
 
       reorderSections: (presentationId, sectionIds) => {
+        if (isSystemPresentation(presentationId)) return;
         set(state => ({
           presentations: state.presentations.map(p => {
             if (p.id !== presentationId) return p;
@@ -187,7 +257,12 @@ export const usePresentationStore = create<PresentationState>()(
 
       getActivePresentation: () => {
         const { presentations, activePresentationId } = get();
-        return presentations.find(p => p.id === activePresentationId) ?? null;
+        const all = [...systemPresentations, ...presentations];
+        return all.find(p => p.id === activePresentationId) ?? null;
+      },
+
+      getAllPresentations: () => {
+        return [...systemPresentations, ...get().presentations];
       },
     }),
     {
