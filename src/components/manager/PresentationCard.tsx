@@ -40,11 +40,9 @@ export function PresentationCard({ presentation }: PresentationCardProps) {
 
   return (
     <div className={styles.card} onClick={() => openEditor(presentation.id)}>
-      <div className={styles.nameRow}>
-        <span className={styles.name}>{presentation.name}</span>
-        {isSystem && <span className={styles.badge}>TEMPLATE</span>}
-      </div>
+      <div className={styles.name}>{presentation.name}</div>
       <div className={styles.meta}>
+        {isSystem && <span className={styles.badge}>TEMPLATE</span>}
         <span>{presentation.sections.length} sections</span>
         <span>{formatTime(totalDuration)}</span>
       </div>
