@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   line-height: 1.5;
 }
 
