@@ -99,7 +99,7 @@ export const useTimerStore = create<TimerState>()((set, get) => ({
     });
   },
 
-  tick: (deltaSec) => {
+  tick: (deltaSec: number) => {
     const { status, activeSectionIndex, sections } = get();
     if (status !== 'running' || activeSectionIndex < 0) return;
 
