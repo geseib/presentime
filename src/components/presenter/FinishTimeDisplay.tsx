@@ -19,7 +19,6 @@ function epochFromTimeString(timeStr: string): number | null {
 }
 
 export function FinishTimeDisplay() {
-  const status = useTimerStore(s => s.status);
   const setTargetFinishTime = useTimerStore(s => s.setTargetFinishTime);
   const targetFinishTime = useTimerStore(s => s.targetFinishTime);
   const totalDurationSec = useTimerStore(s => s.totalDurationSec);
