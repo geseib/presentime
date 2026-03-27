@@ -1,8 +1,9 @@
 .container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   background: var(--color-bg);
   position: relative;
+  overflow: hidden;
 }
 
 .main {
@@ -144,7 +145,6 @@
 
   .container {
     overflow-x: hidden;
-    overflow-y: auto;
   }
 }
 
