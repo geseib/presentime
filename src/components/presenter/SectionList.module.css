@@ -146,3 +146,44 @@
   letter-spacing: 0.05em;
   color: var(--color-text-dim);
 }
+
+/* Narrow time columns on small sidebar so section names have room */
+@media (max-width: 899px) {
+  .colTime {
+    width: 2.8rem;
+    font-size: 0.65rem;
+  }
+
+  .colName {
+    padding-left: var(--space-xs);
+  }
+
+  .statusIcon {
+    width: 1rem;
+    font-size: 0.6rem;
+  }
+
+  .row {
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-xs);
+  }
+
+  .header {
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-sm) var(--space-sm) var(--space-sm);
+  }
+
+  .footer {
+    gap: var(--space-xs);
+    padding: var(--space-sm);
+  }
+
+  .footerName {
+    padding-left: var(--space-xs);
+  }
+
+  .extraLabel {
+    padding-left: var(--space-xs);
+  }
+}
