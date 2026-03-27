@@ -38,8 +38,10 @@ export function MiniPresenter({ onExpand, onStart, onPause, onResume, onReset, o
   const sectionProgress = sectionTotal > 0 ? Math.max(0, sectionRemaining / sectionTotal) : 0;
   const sectionWarning = useSectionWarning(sectionRemaining, sectionTotal);
 
-  // Section name from presentation data
-  const sectionName = presentation?.sections[activeSectionIndex]?.name ?? 'Section';
+  // Section name: dynamic breaks have name on runtime state, otherwise look up from presentation
+  const sectionName = activeSection?.name
+    ?? presentation?.sections.find(s => s.id === activeSection?.sectionId)?.name
+    ?? 'Section';
 
   return (
     <motion.div

@@ -15,7 +15,7 @@ test.describe('Smoke Tests', () => {
 
     // Editor → click Present → Presenter
     await page.getByRole('button', { name: '▶ Present' }).click();
-    await expect(page.getByRole('button', { name: '▶ Start' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Start' })).toBeVisible();
 
     // Presenter → Escape → back to Editor
     await page.keyboard.press('Escape');
@@ -26,18 +26,18 @@ test.describe('Smoke Tests', () => {
     // Navigate to presenter
     await page.getByText('Lightning Talk').first().click();
     await page.getByRole('button', { name: '▶ Present' }).click();
-    await page.getByRole('button', { name: '▶ Start' }).waitFor({ state: 'visible' });
+    await page.getByRole('button', { name: 'Start' }).waitFor({ state: 'visible' });
 
     // Space → Start
     await page.keyboard.press('Space');
-    await expect(page.getByRole('button', { name: '⏸ Pause' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
 
     // Space → Pause
     await page.keyboard.press('Space');
-    await expect(page.getByRole('button', { name: '▶ Resume' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Resume' })).toBeVisible();
 
     // Space → Resume
     await page.keyboard.press('Space');
-    await expect(page.getByRole('button', { name: '⏸ Pause' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
   });
 });

@@ -52,12 +52,6 @@
   margin-top: var(--space-sm);
 }
 
-.controls {
-  display: flex;
-  gap: var(--space-lg);
-  padding-bottom: var(--space-xl);
-}
-
 .finished {
   display: flex;
   flex-direction: column;

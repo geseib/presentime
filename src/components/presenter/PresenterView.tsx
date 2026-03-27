@@ -9,11 +9,12 @@ import { formatTime } from '../../utils/timeUtils';
 import { OverallTimer } from './OverallTimer';
 import { SectionTimer } from './SectionTimer';
 import { SectionList } from './SectionList';
-import { TimerControls } from './TimerControls';
 import { PaceIndicator } from './PaceIndicator';
 import { ThemeSelector } from './ThemeSelector';
 import { MiniPresenter } from './MiniPresenter';
 import { PopoutPortal } from './PopoutPortal';
+import { FinishTimeDisplay } from './FinishTimeDisplay';
+import { ExtraTimeIndicator } from './ExtraTimeIndicator';
 import { WarningOverlay } from '../shared/WarningOverlay';
 import { Button } from '../shared/Button';
 import styles from './PresenterView.module.css';
@@ -31,6 +32,7 @@ export function PresenterView() {
   const resume = useTimerStore(s => s.resume);
   const reset = useTimerStore(s => s.reset);
   const completeCurrentSection = useTimerStore(s => s.completeCurrentSection);
+  const goToPreviousSection = useTimerStore(s => s.goToPreviousSection);
   const totalElapsedSec = useTimerStore(s => s.totalElapsedSec);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -81,6 +83,12 @@ export function PresenterView() {
             completeCurrentSection();
           }
           break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          if (timerStatus === 'running' || timerStatus === 'paused') {
+            goToPreviousSection();
+          }
+          break;
         case 'KeyM':
           e.preventDefault();
           if (popoutOpen) {
@@ -97,7 +105,7 @@ export function PresenterView() {
           break;
       }
     },
-    [timerStatus, start, pause, resume, completeCurrentSection, openEditor, presentation, sidebarOpen, popoutOpen, handlePopout]
+    [timerStatus, start, pause, resume, completeCurrentSection, goToPreviousSection, openEditor, presentation, sidebarOpen, popoutOpen, handlePopout]
   );
 
   useEffect(() => {
@@ -177,35 +185,19 @@ export function PresenterView() {
               <div className={styles.finishedTime}>
                 {formatTime(totalElapsedSec)}
               </div>
-              <TimerControls
-                status={timerStatus}
-                onStart={start}
-                onPause={pause}
-                onResume={resume}
-                onReset={handleRerun}
-              />
+              <Button size="large" onClick={handleRerun}>
+                ↻ Rerun
+              </Button>
             </div>
           ) : (
             <>
               <div className={styles.timers}>
-                <OverallTimer onClick={() => {
-                  if (timerStatus === 'idle') start();
-                  else if (timerStatus === 'running') pause();
-                  else if (timerStatus === 'paused') resume();
-                }} />
-                <SectionTimer onClick={timerStatus === 'running' || timerStatus === 'paused' ? completeCurrentSection : undefined} />
+                <OverallTimer />
+                <SectionTimer />
               </div>
+              <ExtraTimeIndicator />
               <PaceIndicator />
-              <div className={styles.controls}>
-                <TimerControls
-                  status={timerStatus}
-                  onStart={start}
-                  onPause={pause}
-                  onResume={resume}
-                  onReset={reset}
-                  onComplete={completeCurrentSection}
-                />
-              </div>
+              <FinishTimeDisplay />
             </>
           )}
         </div>

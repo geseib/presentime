@@ -20,3 +20,28 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+
+.controlBtn {
+  margin-top: var(--space-sm);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.controlBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--color-text-dim);
+}
+
+.controlBtn:active {
+  background: rgba(255, 255, 255, 0.18);
+}

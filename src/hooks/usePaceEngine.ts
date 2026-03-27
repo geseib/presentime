@@ -28,6 +28,17 @@ export function usePaceEngine(): PaceEngineResult {
   const totalElapsedSec = useTimerStore(s => s.totalElapsedSec);
   const activeSectionIndex = useTimerStore(s => s.activeSectionIndex);
   const status = useTimerStore(s => s.status);
+  const targetFinishTime = useTimerStore(s => s.targetFinishTime);
+  const startedAtEpochMs = useTimerStore(s => s.startedAtEpochMs);
+
+  // When a finish time target is set, use wall-clock remaining as the
+  // effective "time budget" so pace/projections reflect the real deadline.
+  const effectiveDuration = useMemo(() => {
+    if (targetFinishTime && startedAtEpochMs) {
+      return Math.max(0, (targetFinishTime - startedAtEpochMs) / 1000);
+    }
+    return totalDurationSec;
+  }, [targetFinishTime, startedAtEpochMs, totalDurationSec]);
 
   const trackerRef = useRef(new TrendTracker());
 
@@ -39,8 +50,8 @@ export function usePaceEngine(): PaceEngineResult {
   }, [status]);
 
   const pace = useMemo(
-    () => calcPaceSnapshot(sections, totalDurationSec, totalElapsedSec),
-    [sections, totalDurationSec, totalElapsedSec]
+    () => calcPaceSnapshot(sections, effectiveDuration, totalElapsedSec),
+    [sections, effectiveDuration, totalElapsedSec]
   );
 
   // Record sample for trend tracking
@@ -51,13 +62,13 @@ export function usePaceEngine(): PaceEngineResult {
   }, [status, pace.offsetSec]);
 
   const projection = useMemo(
-    () => calcProjectedFinish(sections, totalDurationSec, totalElapsedSec),
-    [sections, totalDurationSec, totalElapsedSec]
+    () => calcProjectedFinish(sections, effectiveDuration, totalElapsedSec),
+    [sections, effectiveDuration, totalElapsedSec]
   );
 
   const recovery = useMemo(
-    () => calcRecoveryGuidance(sections, totalDurationSec, totalElapsedSec, activeSectionIndex),
-    [sections, totalDurationSec, totalElapsedSec, activeSectionIndex]
+    () => calcRecoveryGuidance(sections, effectiveDuration, totalElapsedSec, activeSectionIndex),
+    [sections, effectiveDuration, totalElapsedSec, activeSectionIndex]
   );
 
   const trend = useMemo(

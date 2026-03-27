@@ -68,6 +68,6 @@ test.describe('Full Presentation Run', () => {
     await page.getByRole('button', { name: '↻ Rerun' }).click();
 
     // Should be back to idle with Start button
-    await expect(page.getByRole('button', { name: '▶ Start' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Start' })).toBeVisible();
   });
 });

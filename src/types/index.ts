@@ -25,4 +25,6 @@ export interface SectionRuntimeState {
   elapsedSec: number;
   originalDurationSec: number;
   adjustedDurationSec: number;
+  isBreak?: boolean;
+  name?: string;
 }

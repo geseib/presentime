@@ -51,3 +51,38 @@
   align-items: center;
   justify-content: center;
 }
+
+.navButtons {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.navBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.navBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--color-text-dim);
+}
+
+.navBtn:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.navBtn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}

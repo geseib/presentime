@@ -1,0 +1,104 @@
+.wrapper {
+  position: relative;
+}
+
+.divider {
+  height: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: height 0.15s ease, background 0.15s ease;
+  border-radius: var(--radius-sm);
+  margin: 0 var(--space-sm);
+}
+
+.label {
+  font-size: var(--text-xs);
+  color: transparent;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+  user-select: none;
+}
+
+.divider:hover {
+  height: 28px;
+  background: rgba(255, 214, 0, 0.08);
+}
+
+.divider:hover .label {
+  color: #FFD600;
+}
+
+.popup {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  margin-top: 2px;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  z-index: 200;
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.presets {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.presetBtn {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.presetBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.custom {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.customInput {
+  flex: 1;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  width: 50px;
+}
+
+.customInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.customInput::-webkit-inner-spin-button,
+.customInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.customInput[type='number'] {
+  -moz-appearance: textfield;
+}

@@ -9,16 +9,14 @@ import { THEME_CONFIGS } from './themeConfig';
 import { ProgressArc } from '../shared/ProgressArc';
 import styles from './SectionTimer.module.css';
 
-interface SectionTimerProps {
-  onClick?: () => void;
-}
-
-export function SectionTimer({ onClick }: SectionTimerProps) {
+export function SectionTimer() {
   const activeSection = useTimerStore(s => s.getActiveSection());
   const activeSectionIndex = useTimerStore(s => s.activeSectionIndex);
   const sections = useTimerStore(s => s.sections);
-  const presentation = usePresentationStore(s => s.getActivePresentation());
   const status = useTimerStore(s => s.status);
+  const completeCurrentSection = useTimerStore(s => s.completeCurrentSection);
+  const goToPreviousSection = useTimerStore(s => s.goToPreviousSection);
+  const presentation = usePresentationStore(s => s.getActivePresentation());
   const theme = useThemeStore(s => s.theme);
   const config = THEME_CONFIGS[theme];
   const { sectionSize, sectionStroke } = useResponsiveSize(config);
@@ -29,9 +27,13 @@ export function SectionTimer({ onClick }: SectionTimerProps) {
   const totalForWarning = activeSection?.adjustedDurationSec ?? 0;
   const warningLevel = useSectionWarning(remaining, totalForWarning);
 
+  const isActive = status === 'running' || status === 'paused';
+  const canGoBack = isActive && activeSectionIndex > 0;
+  const canGoForward = isActive && activeSectionIndex >= 0;
+
   if (status === 'idle') {
     return (
-      <div className={styles.wrapper} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
+      <div className={styles.wrapper}>
         <div
           className={styles.idle}
           style={config.timersHorizontal ? { width: sectionSize, height: sectionSize } : undefined}
@@ -49,14 +51,25 @@ export function SectionTimer({ onClick }: SectionTimerProps) {
       ? Math.max(0, remaining / activeSection.adjustedDurationSec)
       : 1;
 
-  const sectionData = presentation?.sections.find(
-    s => s.id === activeSection.sectionId
-  );
-  const sectionName = sectionData?.name ?? 'Section';
+  // Resolve section name: dynamic breaks have name on runtime state, otherwise look up from presentation
+  const sectionName = activeSection.name
+    ?? presentation?.sections.find(s => s.id === activeSection.sectionId)?.name
+    ?? 'Section';
   const sectionInfo = `Section ${activeSectionIndex + 1} of ${sections.length}`;
 
+  const resolveName = (idx: number) => {
+    const s = sections[idx];
+    if (!s) return '';
+    return s.name
+      ?? presentation?.sections.find(p => p.id === s.sectionId)?.name
+      ?? `Section ${idx + 1}`;
+  };
+  const prevName = activeSectionIndex > 0 ? resolveName(activeSectionIndex - 1) : '';
+  const nextIdx = sections.findIndex((s, i) => i > activeSectionIndex && s.status === 'pending');
+  const nextName = nextIdx >= 0 ? resolveName(nextIdx) : '';
+
   return (
-    <div className={styles.wrapper} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
+    <div className={styles.wrapper}>
       <ProgressArc
         progress={progress}
         size={sectionSize}
@@ -79,6 +92,26 @@ export function SectionTimer({ onClick }: SectionTimerProps) {
             <div className={styles.compactInfo}>{sectionInfo}</div>
           </>
         )}
+        <div className={styles.navButtons}>
+          <button
+            className={styles.navBtn}
+            onClick={goToPreviousSection}
+            disabled={!canGoBack}
+            aria-label="Previous section"
+            title={prevName ? `Back to: ${prevName}` : undefined}
+          >
+            ⏮
+          </button>
+          <button
+            className={styles.navBtn}
+            onClick={completeCurrentSection}
+            disabled={!canGoForward}
+            aria-label="Next section"
+            title={nextName ? `Next: ${nextName}` : undefined}
+          >
+            ⏭
+          </button>
+        </div>
       </ProgressArc>
       {!config.labelInRing && (
         <>
