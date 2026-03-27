@@ -55,7 +55,7 @@
 .navButtons {
   display: flex;
   gap: var(--space-sm);
-  margin-top: var(--space-sm);
+  margin-top: var(--space-xs);
 }
 
 .navBtn {

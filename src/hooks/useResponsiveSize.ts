@@ -32,19 +32,20 @@ function computeSizes(config: ThemeConfig): ResponsiveSizes {
   let sectionSize: number;
 
   if (isStacked) {
-    // Stacked: overall gets 55% of vertical budget, section gets 38%
-    // Also constrained by horizontal space (with padding)
+    // Stacked: overall gets 42% of vertical budget, section gets 32%
+    // Reserve space for: section name, pace, extra time, finish time (~280px on mobile)
     const horizontalBudget = availableWidth - 48; // padding
-    const verticalBudget = availableHeight - 160; // controls + padding
+    const belowArcsReserve = vw < 600 ? 280 : 200;
+    const verticalBudget = availableHeight - belowArcsReserve;
 
     overallSize = Math.min(
       config.overallSize,
-      verticalBudget * 0.55,
+      verticalBudget * 0.46,
       horizontalBudget,
     );
     sectionSize = Math.min(
       config.sectionSize,
-      verticalBudget * 0.38,
+      verticalBudget * 0.34,
       horizontalBudget,
     );
   } else {

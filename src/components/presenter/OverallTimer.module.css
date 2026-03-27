@@ -22,7 +22,7 @@
 }
 
 .controlBtn {
-  margin-top: var(--space-sm);
+  margin-top: var(--space-xs);
   width: 48px;
   height: 48px;
   border-radius: 50%;
